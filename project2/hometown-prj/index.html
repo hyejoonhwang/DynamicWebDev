@@ -4,9 +4,269 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <p class="title">
-            My home town, 
+        <span class="title">
+            My hometown,<br>
             Jamsil
-        </p>
-  
+        </span>
+
+        <!-- 좌상단 -->
+        <div class="info-box top-left">
+            <div class="info-title">Charlotte Theatre</div>
+            <div class="info-coord">37.5107° N, 127.0998° E</div>
+        </div>
+        
+        <!-- 우상단 -->
+        <div class="info-box top-right">
+            <div class="info-title">Lotte World</div>
+            <div class="info-coord">37.5111° N, 127.0982° E</div>
+        </div>
+        
+        <!-- 좌하단 -->
+        <div class="info-box bottom-left">
+            <div class="info-title">Seokchon Hosu Lake</div>
+            <div class="info-coord">37.5110° N, 127.1039° E</div>
+        </div>
+        
+        <!-- 우하단 -->
+        <div class="info-box bottom-right">
+            <div class="info-title">Lotte World Mall</div>
+            <div class="info-coord">37.5131° N, 127.1033° E</div>
+        </div>
+
+        <!-- 숨긴 캔버스: 배경 이미지를 그려 색상 분석에 사용 -->
+        <canvas id="bg-canvas" style="display:none"></canvas>
+
+        <!-- 중앙 점 (초기 숨김) -->
+        <div class="center-dot" aria-hidden="true" style="display:none"></div>
+
+        <!-- SVG 연결선 (모서리 박스와 중앙 점을 잇기 위해) -->
+        <svg class="connect-lines" aria-hidden="true"></svg>
+
+        <!-- 떠다니는 실크웜 이미지 -->
+        <img class="floating-silkworm" src="silkworm.png" alt="Silkworm" />
+
+        <script>
+        (function(){
+            function getBackgroundImageUrl() {
+                const bg = getComputedStyle(document.body).backgroundImage || '';
+                const m = bg.match(/url\((['"]?)(.+?)\1\)/);
+                return m ? m[2] : null;
+            }
+
+            function detectBlueCenter() {
+                const url = getBackgroundImageUrl();
+                if (!url) return;
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    const vw = window.innerWidth;
+                    const vh = window.innerHeight;
+                    const canvas = document.getElementById('bg-canvas');
+                    canvas.width = vw;
+                    canvas.height = vh;
+                    const ctx = canvas.getContext('2d');
+
+                    // cover처럼 이미지 스케일링하여 현재 보이는 배경과 동일하게 그림
+                    const scale = Math.max(vw / img.width, vh / img.height);
+                    const iw = img.width * scale;
+                    const ih = img.height * scale;
+                    const dx = (vw - iw) / 2;
+                    const dy = (vh - ih) / 2;
+                    ctx.clearRect(0,0,vw,vh);
+                    ctx.drawImage(img, dx, dy, iw, ih);
+
+                    try {
+                        const data = ctx.getImageData(0,0,vw,vh).data;
+                        let sumX = 0, sumY = 0, count = 0;
+                        const step = 3; // 속도 위해 샘플링
+                        for (let y = 0; y < vh; y += step) {
+                            for (let x = 0; x < vw; x += step) {
+                                const i = (y * vw + x) * 4;
+                                const r = data[i], g = data[i+1], b = data[i+2];
+                                // 파랑 판정: b가 충분히 크고 r/g보다 뚜렷히 큰 경우
+                                if (b > 90 && b > r * 1.25 && b > g * 1.25) {
+                                    sumX += x; sumY += y; count++;
+                                }
+                            }
+                        }
+
+                        const dot = document.querySelector('.center-dot');
+                        if (!dot) return;
+                        if (count === 0) {
+                            dot.style.display = 'none';
+                            return;
+                        }
+                        const cx = Math.round(sumX / count);
+                        const cy = Math.round(sumY / count);
+
+                        dot.style.display = 'block';
+                        dot.style.left = cx + 'px';
+                        dot.style.top = cy + 'px';
+                        dot.style.transform = 'translate(-50%,-50%)';
+                        // 선 업데이트
+                        updateConnectorLines();
+                    } catch (err) {
+                        console.error('이미지 데이터에 접근할 수 없습니다:', err);
+                    }
+                };
+                img.onerror = () => console.error('배경 이미지 로드 실패:', url);
+            }
+
+            function updateConnectorLines() {
+                const svg = document.querySelector('.connect-lines');
+                const dot = document.querySelector('.center-dot');
+                if (!svg || !dot) return;
+                const boxes = document.querySelectorAll('.info-box');
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                svg.setAttribute('width', w);
+                svg.setAttribute('height', h);
+                svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+                const dotRect = dot.getBoundingClientRect();
+                const cx = dotRect.left + dotRect.width / 2;
+                const cy = dotRect.top + dotRect.height / 2;
+                const svgns = 'http://www.w3.org/2000/svg';
+
+                boxes.forEach(box => {
+                    const r = box.getBoundingClientRect();
+                    const bx = r.left + r.width / 2;
+                    const by = r.top + r.height / 2;
+                    const line = document.createElementNS(svgns, 'line');
+                    line.setAttribute('x1', cx);
+                    line.setAttribute('y1', cy);
+                    line.setAttribute('x2', bx);
+                    line.setAttribute('y2', by);
+                    line.setAttribute('stroke', 'rgb(0,102,255)');
+                    line.setAttribute('stroke-width', '3');
+                    line.setAttribute('stroke-linecap', 'round');
+                    svg.appendChild(line);
+                });
+            }
+
+            // expose to global so other scripts (drag) can call it
+            window.updateConnectorLines = updateConnectorLines;
+
+            window.addEventListener('load', function(){ detectBlueCenter(); updateConnectorLines(); });
+            window.addEventListener('resize', function(){
+                // resize 시 약간 지연 후 재계산
+                clearTimeout(window._blueDetectTimer);
+                window._blueDetectTimer = setTimeout(function(){ detectBlueCenter(); updateConnectorLines(); }, 150);
+            });
+        })();
+        </script>
+
+        <!-- 드래그 핸들: .info-box를 드래그 가능하게 하고 선을 갱신 -->
+        <script>
+        (function(){
+            function makeDraggable(el) {
+                el.style.touchAction = 'none';
+                el.addEventListener('pointerdown', onPointerDown);
+
+                function onPointerDown(e) {
+                    e.preventDefault();
+                    el.setPointerCapture(e.pointerId);
+                    el.classList.add('dragging');
+
+                    const rect = el.getBoundingClientRect();
+                    const startX = e.clientX;
+                    const startY = e.clientY;
+
+                    // 현재 left/top 값 (px). 만약 left/top이 지정되지 않았으면 rect 기준으로 사용.
+                    const cs = getComputedStyle(el);
+                    let left = parseFloat(cs.left);
+                    let top = parseFloat(cs.top);
+                    if (isNaN(left)) left = rect.left;
+                    if (isNaN(top)) top = rect.top;
+
+                    // 기존 bottom/right 속성이 있으면 제거해서 left/top 기반으로 이동
+                    el.style.right = 'auto';
+                    el.style.bottom = 'auto';
+
+                    function onPointerMove(ev) {
+                        const dx = ev.clientX - startX;
+                        const dy = ev.clientY - startY;
+                        let newLeft = left + dx;
+                        let newTop = top + dy;
+                        const minX = 0;
+                        const minY = 0;
+                        const maxX = window.innerWidth - el.offsetWidth;
+                        const maxY = window.innerHeight - el.offsetHeight;
+                        if (newLeft < minX) newLeft = minX;
+                        if (newLeft > maxX) newLeft = maxX;
+                        if (newTop < minY) newTop = minY;
+                        if (newTop > maxY) newTop = maxY;
+                        el.style.left = newLeft + 'px';
+                        el.style.top = newTop + 'px';
+                        if (typeof updateConnectorLines === 'function') updateConnectorLines();
+                    }
+
+                    function onPointerUp(ev) {
+                        try { el.releasePointerCapture(e.pointerId); } catch(e) {}
+                        el.classList.remove('dragging');
+                        window.removeEventListener('pointermove', onPointerMove);
+                        window.removeEventListener('pointerup', onPointerUp);
+                        if (typeof updateConnectorLines === 'function') updateConnectorLines();
+                    }
+
+                    window.addEventListener('pointermove', onPointerMove);
+                    window.addEventListener('pointerup', onPointerUp);
+                }
+            }
+
+            document.querySelectorAll('.info-box').forEach(makeDraggable);
+        })();
+        </script>
+
+        <!-- 실크웜 물리 시뮬레이션: 화면 돌아다니며 경계에서 튕겨나옴 -->
+        <script>
+        (function(){
+            const silkworm = document.querySelector('.floating-silkworm');
+            if (!silkworm) return;
+
+            let x = window.innerWidth / 2;
+            let y = window.innerHeight / 2;
+            let vx = 1; // 초당 픽셀
+            let vy = 1;
+            const speed = 2; // 이동 속도 (픽셀/프레임)
+            
+            function animate() {
+                const w = silkworm.offsetWidth;
+                const h = silkworm.offsetHeight;
+                
+                // 속도 적용
+                x += vx;
+                y += vy;
+                
+                // 경계 충돌 감지 및 튕겨나옴
+                if (x <= 0 || x + w >= window.innerWidth) {
+                    vx = -vx;
+                    x = Math.max(0, Math.min(x, window.innerWidth - w));
+                }
+                if (y <= 0 || y + h >= window.innerHeight) {
+                    vy = -vy;
+                    y = Math.max(0, Math.min(y, window.innerHeight - h));
+                }
+                
+                // 위치 업데이트
+                silkworm.style.position = 'fixed';
+                silkworm.style.left = x + 'px';
+                silkworm.style.top = y + 'px';
+                silkworm.style.transform = 'none';
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            // 창 크기 변경 시 경계 조정
+            window.addEventListener('resize', function(){
+                x = Math.min(x, window.innerWidth - silkworm.offsetWidth);
+                y = Math.min(y, window.innerHeight - silkworm.offsetHeight);
+            });
+        })();
+        </script>
+
+    </body>
 </html>
