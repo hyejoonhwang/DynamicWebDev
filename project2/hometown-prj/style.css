@@ -1,8 +1,18 @@
 body {
-    background-image: url("bitmap-jamsil.png");
+    background-image: url("background-jamsil.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
+}
+
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-top: 20%;
+    font-family: Anonymous Pro, monospace;
+    font-style: italic;
+    text-shadow: 2px 2px 4px #000000;
 }
