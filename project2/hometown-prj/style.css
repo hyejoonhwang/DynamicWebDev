@@ -8,11 +8,14 @@ body {
 }
 
 
-h1 {
+p {
+
+    .title {            
     color: white;
     text-align: center;
     margin-top: 20%;
     font-family: "Anonymous Pro", monospace;
     font-style: italic;
     text-shadow: 2px 2px 4px #000000;
+    }
 }
