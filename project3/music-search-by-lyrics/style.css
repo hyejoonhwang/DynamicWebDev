@@ -1,9 +1,8 @@
-.single-day-regular {
-  font-family: "Single Day", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
+/* ============================================
+   RESET & BASE STYLES
+   The * selector targets every element on the page.
+   box-sizing: border-box makes width/height include padding and border.
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
@@ -17,13 +16,12 @@ body {
     min-height: 100vh;
 }
 
-.container {
-    position: relative;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 60px 20px 40px;
-}
-
+/* ============================================
+   BACKGROUND EFFECT
+   Creates a subtle green glow behind the page.
+   "position: fixed" means it stays in place when you scroll.
+   "pointer-events: none" means you can click through it.
+   ============================================ */
 .bg-glow {
     position: fixed;
     top: -200px;
@@ -35,6 +33,21 @@ body {
     pointer-events: none;
 }
 
+/* ============================================
+   LAYOUT CONTAINER
+   max-width stops it from getting too wide on big screens.
+   margin: 0 auto centers it horizontally.
+   ============================================ */
+.container {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 20px 40px;
+}
+
+/* ============================================
+   HEADER / HERO SECTION
+   ============================================ */
 .hero {
     text-align: center;
     margin-bottom: 40px;
@@ -44,7 +57,7 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 3em;
     font-weight: 700;
-    color: #2e7c49;
+    color: #1DB954;
     margin-bottom: 8px;
 }
 
@@ -53,6 +66,11 @@ body {
     font-size: 1.05em;
 }
 
+/* ============================================
+   SEARCH BAR
+   "display: flex" puts the input and button side by side.
+   Docs: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout
+   ============================================ */
 .search-box {
     display: flex;
     gap: 10px;
@@ -71,6 +89,13 @@ body {
     outline: none;
 }
 
+.search-input:focus {
+    border-color: #1DB954;
+}
+
+.search-input::placeholder {
+    color: #555568;
+}
 
 .search-btn {
     padding: 16px 32px;
@@ -84,7 +109,14 @@ body {
     cursor: pointer;
 }
 
+.search-btn:hover {
+    background: #1ed760;
+}
 
+.search-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 .hint {
     text-align: center;

@@ -1,51 +1,46 @@
-<html>  
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>music search by lyrics</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Music Chat</title>
 
+    <!-- Google Fonts — free fonts loaded from Google's servers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Single+Day&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 
+    <!-- Link to our CSS file (the styling) -->
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" ></script>
 
+    <!-- Link to our JavaScript file -->
+    <script src="main.js"></script>
 </head>
 <body>
+    <!-- Background glow effect -->
     <div class="bg-glow"></div>
-    <div class="container">
 
+    <div class="container">
         <!-- HERO / HEADER -->
-       <div class="hero">
-            <h1 class="hero-title">what do you want to say?</h1>
-            <p class="hero-subtitle">Type anything and find the song that matches</p>
+        <div class="hero">
+            <h1 class="hero-title">My Music Chat</h1>
+            <p class="hero-subtitle">Type anything — find the song that matches</p>
         </div>
 
-
         <!-- SEARCH BAR -->
-       <div class="search-box">
+        <div class="search-box">
             <input
                 type="text"
                 id="searchInput"
                 class="search-input"
                 placeholder="Type a feeling, a phrase, anything..."
             />
-            <button id="searchBtn" class="search-btn">Search</button>            
+            <button id="searchBtn" class="search-btn">Search</button>
         </div>
         <p class="hint">Try: "dancing in the moonlight" or "I feel so lonely"</p>
 
         <!-- RESULTS — JavaScript fills this in -->
         <div id="results"></div>
-
-
     </div>
-
-
-
-
-
-
-
-    
 </body>
-
 </html>

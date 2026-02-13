@@ -1,11 +1,45 @@
-//   1. WINDOW.ONLOAD
+/*
+ * =============================================
+ * MY MUSIC CHAT — main.js
+ * =============================================
+ *
+ * This file has 6 sections:
+ *   1. window.onload (wait for the page to load)
+ *   2. Element references (grabbing HTML elements)
+ *   3. Event listeners (what happens when you click/type)
+ *   4. API functions (talking to LRCLIB and iTunes)
+ *   5. Lyric matching (finding the best matching line)
+ *   6. Display function (showing results on the page)
+ *
+ * APIs used (both free, no API key needed!):
+ *   - LRCLIB: https://lrclib.net/docs
+ *   - iTunes Search API: https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
+ * =============================================
+ */
+
+
+/* =============================================
+   1. WINDOW.ONLOAD
+   We wait for the entire page to load before running any code.
+   This makes sure all HTML elements exist before we try to grab them.
+   Docs: https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
+   ============================================= */
 
 window.onload = function () {
     console.log("page is fully loaded");
     init();
 };
 
-//    2 & 3. ELEMENT REFERENCES + EVENT LISTENERS
+
+/* =============================================
+   2 & 3. ELEMENT REFERENCES + EVENT LISTENERS
+   document.getElementById() finds an HTML element by its "id" attribute.
+   Docs: https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
+
+   addEventListener() "listens" for user actions and runs a function when they happen.
+   Docs: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+   ============================================= */
+
 function init() {
     // Grab our HTML elements and save them in variables
     var searchInput = document.getElementById("searchInput");
@@ -27,7 +61,14 @@ function init() {
 }
 
 
-//    4. MAIN SEARCH FUNCTION
+/* =============================================
+   4. MAIN SEARCH FUNCTION
+
+   "async" means this function can use "await" inside it.
+   "await" pauses the function until a slow operation (like an API call) finishes.
+   Docs: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises
+   ============================================= */
+
 async function performSearch(searchInput, searchBtn, resultsDiv) {
     // .trim() removes extra spaces from the start and end
     var query = searchInput.value.trim();
@@ -110,7 +151,17 @@ async function performSearch(searchInput, searchBtn, resultsDiv) {
 }
 
 
+/* =============================================
    5. API FUNCTIONS
+   ============================================= */
+
+/**
+ * Search LRCLIB for songs matching the user's text.
+ *
+ * fetch() makes an HTTP request — like visiting a URL in code.
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+ * LRCLIB docs: https://lrclib.net/docs
+ */
 async function searchLRCLIB(query) {
     // encodeURIComponent() makes text safe to put in a URL
     // e.g. spaces become %20
@@ -130,6 +181,14 @@ async function searchLRCLIB(query) {
     return jsonData;
 }
 
+
+/**
+ * Search iTunes for album art and a 30-second audio preview.
+ * Completely free, no API key needed!
+ *
+ * iTunes API docs:
+ * https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
+ */
 async function searchiTunes(trackName, artistName) {
     try {
         var searchTerm = encodeURIComponent(trackName + " " + artistName);
@@ -155,7 +214,20 @@ async function searchiTunes(trackName, artistName) {
     return { albumArt: null, previewUrl: null, itunesUrl: null };
 }
 
+
+/* =============================================
    6. LYRIC MATCHING
+   ============================================= */
+
+/**
+ * Find the lyric line that best matches the user's text.
+ *
+ * How it works:
+ *   1. Split the user's input into individual words
+ *   2. Go through every line of the song's lyrics
+ *   3. Count how many of the user's words appear in each line
+ *   4. The line with the most matching words wins!
+ */
 function findBestMatch(query, syncedLyrics, plainLyrics) {
     // Use synced lyrics first (they have timestamps), fall back to plain
     var lyrics = syncedLyrics || plainLyrics;
@@ -221,7 +293,16 @@ function findBestMatch(query, syncedLyrics, plainLyrics) {
 }
 
 
+/* =============================================
    7. DISPLAY FUNCTION
+   ============================================= */
+
+/**
+ * Build the HTML for search results and put it on the page.
+ *
+ * We build the HTML as a string and then set innerHTML to display it.
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+ */
 function displayResults(query, songs, resultsDiv) {
     if (songs.length === 0) {
         resultsDiv.innerHTML =
@@ -289,6 +370,16 @@ function displayResults(query, songs, resultsDiv) {
     resultsDiv.innerHTML = html;
 }
 
+
+/**
+ * Escape HTML special characters to prevent XSS attacks.
+ *
+ * If a song title contained <script>alert("hacked")</script>,
+ * and we put it directly into innerHTML, the browser would run that code!
+ * This function makes it safe by converting < to &lt; etc.
+ *
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+ */
 function escapeHTML(text) {
     if (!text) return "";
     var div = document.createElement("div");
