@@ -1,0 +1,234 @@
+.single-day-regular {
+  font-family: "Single Day", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #0a0a0f;
+    color: #eaeaea;
+    min-height: 100vh;
+}
+
+.container {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 20px 40px;
+}
+
+.bg-glow {
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(29, 185, 84, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    font-weight: 700;
+    color: #2e7c49;
+    margin-bottom: 8px;
+}
+
+.hero-subtitle {
+    color: #8888a0;
+    font-size: 1.05em;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 16px 22px;
+    font-size: 1em;
+    font-family: 'DM Sans', sans-serif;
+    border: 1.5px solid #2a2a3d;
+    border-radius: 50px;
+    background: #141420;
+    color: #eaeaea;
+    outline: none;
+}
+
+
+.search-btn {
+    padding: 16px 32px;
+    font-size: 1em;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    background: #1DB954;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+
+.hint {
+    text-align: center;
+    color: #555568;
+    font-size: 0.85em;
+    margin-bottom: 50px;
+}
+
+/* ============================================
+   RESULTS HEADER
+   ============================================ */
+.results-header {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2a3d;
+}
+
+.results-header h2 {
+    font-weight: 500;
+    font-size: 1em;
+    color: #8888a0;
+}
+
+.results-header span {
+    color: #1DB954;
+    font-weight: 700;
+}
+
+/* ============================================
+   SONG CARDS
+   Each search result is a "card."
+   ============================================ */
+.song-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px;
+    margin-bottom: 10px;
+    background: #141420;
+    border: 1px solid transparent;
+    border-radius: 12px;
+}
+
+.song-card:hover {
+    background: #1c1c2e;
+    border-color: #2a2a3d;
+}
+
+/* Album art image */
+.album-art {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+}
+
+/* Placeholder when no album art is available */
+.no-art {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    background: #2a2a3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+}
+
+/* Song info section */
+.song-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-name {
+    font-weight: 700;
+    font-size: 1.05em;
+    margin-bottom: 2px;
+}
+
+.artist-name {
+    color: #8888a0;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+/* The matching lyric line */
+.matching-lyric {
+    background: rgba(29, 185, 84, 0.15);
+    border-left: 3px solid #1DB954;
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 0.92em;
+    color: #ccc;
+}
+
+.timestamp {
+    color: #1DB954;
+    font-style: normal;
+    font-size: 0.82em;
+    font-weight: 600;
+}
+
+/* Links row (Apple Music link + audio preview) */
+.links-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.music-link {
+    color: #1DB954;
+    text-decoration: none;
+    font-size: 0.82em;
+    font-weight: 500;
+}
+
+.music-link:hover {
+    text-decoration: underline;
+}
+
+/* Audio preview player */
+.preview-player {
+    height: 28px;
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+.loading {
+    text-align: center;
+    padding: 60px 0;
+    color: #8888a0;
+}
+
+/* No results state */
+.no-results {
+    text-align: center;
+    padding: 60px 0;
+    color: #8888a0;
+}
+
+.no-results .emoji {
+    font-size: 2.5em;
+    margin-bottom: 12px;
+}
