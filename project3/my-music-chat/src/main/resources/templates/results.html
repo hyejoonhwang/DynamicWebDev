@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+    Thymeleaf template for search results.
+    th: attributes get replaced with real data from Java.
+    Docs: https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Results - My Music Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #191414;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* TOP SEARCH BAR (so users can search again without going back) */
+        .top-bar {
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 2px solid #333;
+            border-radius: 25px;
+            background-color: #282828;
+            color: white;
+            outline: none;
+        }
+        .search-input:focus {
+            border-color: #1DB954;
+        }
+        .search-btn {
+            padding: 12px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            background-color: #1DB954;
+            color: white;
+            cursor: pointer;
+        }
+        .search-btn:hover {
+            background-color: #1ed760;
+        }
+
+        /* RESULTS HEADING */
+        .results-header {
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        .results-header h2 {
+            color: #b3b3b3;
+            font-weight: normal;
+        }
+        .results-header span {
+            color: #1DB954;
+            font-weight: bold;
+        }
+
+        /* EACH SONG RESULT */
+        .results-list {
+            max-width: 800px;
+            margin: 0 auto;
+            list-style: none;
+        }
+        .song-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 12px;
+            background-color: #282828;
+            border-radius: 10px;
+            transition: background-color 0.2s;
+        }
+        .song-card:hover {
+            background-color: #3e3e3e;
+        }
+
+        /* Album art image */
+        .album-art {
+            width: 80px;
+            height: 80px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        /* Placeholder when there's no album art */
+        .no-art {
+            width: 80px;
+            height: 80px;
+            border-radius: 6px;
+            background-color: #404040;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+
+        /* Song info section */
+        .song-info {
+            flex: 1;
+        }
+        .track-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .artist-name {
+            color: #b3b3b3;
+            margin-bottom: 8px;
+        }
+
+        /* The matching lyric line — this is the key feature! */
+        .matching-lyric {
+            background-color: rgba(29, 185, 84, 0.15);
+            border-left: 3px solid #1DB954;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-style: italic;
+            color: #e0e0e0;
+        }
+        .timestamp {
+            color: #1DB954;
+            font-size: 0.85em;
+            font-style: normal;
+        }
+
+        /* Spotify link */
+        .spotify-link {
+            color: #1DB954;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .spotify-link:hover {
+            text-decoration: underline;
+        }
+
+        /* No results message */
+        .no-results {
+            text-align: center;
+            color: #b3b3b3;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Back to home link */
+        .back-link {
+            color: #1DB954;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SEARCH BAR AT THE TOP -->
+    <div class="top-bar">
+        <form action="/search" method="GET" class="search-form">
+            <!--
+                th:value="${query}" fills in what the user previously searched,
+                so they can see and modify their search
+            -->
+            <input type="text" name="q" class="search-input"
+                   th:value="${query}"
+                   placeholder="Type a feeling, a phrase, anything..." required />
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+
+    <!-- RESULTS HEADER -->
+    <div class="results-header">
+        <h2>Results for "<span th:text="${query}">search term</span>"</h2>
+    </div>
+
+    <!-- RESULTS LIST (only shows if there are results) -->
+    <ul class="results-list" th:if="${!results.isEmpty()}">
+        <!--
+            th:each loops through each song in the results list.
+            It's like a Java for-each loop:
+            for (Map song : results) { ... }
+        -->
+        <li class="song-card" th:each="song : ${results}">
+
+            <!-- Album art from Spotify (if available) -->
+            <img class="album-art"
+                 th:if="${song['albumArt'] != null}"
+                 th:src="${song['albumArt']}"
+                 alt="Album art" />
+            <div class="no-art" th:if="${song['albumArt'] == null}">🎵</div>
+
+            <div class="song-info">
+                <!-- Song title and artist -->
+                <div class="track-name" th:text="${song['trackName']}">Song Title</div>
+                <div class="artist-name" th:text="${song['artistName']}">Artist Name</div>
+
+                <!-- THE MATCHING LYRIC LINE — the star of the show! -->
+                <div class="matching-lyric">
+                    <!--
+                        Show the timestamp if we have one.
+                        th:if only shows this element when the condition is true.
+                    -->
+                    <span class="timestamp"
+                          th:if="${song['timestamp'] != null and !song['timestamp'].isEmpty()}"
+                          th:text="'[' + ${song['timestamp']} + '] '">
+                    </span>
+                    <span th:text="${song['matchingLine']}">Matching lyric line here</span>
+                </div>
+
+                <!-- Link to open in Spotify -->
+                <a class="spotify-link"
+                   th:if="${song['spotifyUrl'] != null}"
+                   th:href="${song['spotifyUrl']}"
+                   target="_blank">
+                    Open in Spotify ↗
+                </a>
+            </div>
+        </li>
+    </ul>
+
+    <!-- NO RESULTS MESSAGE -->
+    <div class="no-results" th:if="${results.isEmpty()}">
+        <p>😔 No songs found matching your text.</p>
+        <p>Try different words or a shorter phrase!</p>
+    </div>
+
+    <div style="max-width: 800px; margin: 20px auto;">
+        <a href="/" class="back-link">← Back to home</a>
+    </div>
+
+</body>
+</html>

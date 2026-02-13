@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Music Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #191414;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #b3b3b3;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        /* SEARCH BAR STYLES */
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #333;
+            border-radius: 25px;
+            background-color: #282828;
+            color: white;
+            outline: none;
+        }
+        /* "Focus" means when the user clicks into the input box */
+        .search-input:focus {
+            border-color: #1DB954;
+        }
+        /* This changes the placeholder text color (the grey hint text) */
+        .search-input::placeholder {
+            color: #666;
+        }
+        .search-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 25px;
+            background-color: #1DB954;
+            color: white;
+            cursor: pointer;
+        }
+        .search-btn:hover {
+            background-color: #1ed760;
+        }
+        .hint {
+            color: #666;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 My Music Chat</h1>
+        <p class="subtitle">Type anything and find the song that matches</p>
+
+        <!--
+            This form sends the user to /search?q=whatever+they+typed
+            method="GET" means the data goes in the URL (not hidden)
+            The input's "name" attribute becomes the URL parameter name
+        -->
+        <form action="/search" method="GET" class="search-form">
+            <input
+                type="text"
+                name="q"
+                class="search-input"
+                placeholder="Type a feeling, a phrase, anything..."
+                required
+            />
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+
+        <p class="hint">Try: "dancing in the moonlight" or "I feel so lonely" or "sunshine on my shoulders"</p>
+    </div>
+</body>
+</html>
