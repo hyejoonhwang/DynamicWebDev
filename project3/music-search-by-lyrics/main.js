@@ -1,44 +1,10 @@
-/*
- * =============================================
- * MY MUSIC CHAT — main.js
- * =============================================
- *
- * This file has 6 sections:
- *   1. window.onload (wait for the page to load)
- *   2. Element references (grabbing HTML elements)
- *   3. Event listeners (what happens when you click/type)
- *   4. API functions (talking to LRCLIB and iTunes)
- *   5. Lyric matching (finding the best matching line)
- *   6. Display function (showing results on the page)
- *
- * APIs used (both free, no API key needed!):
- *   - LRCLIB: https://lrclib.net/docs
- *   - iTunes Search API: https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
- * =============================================
- */
 
-
-/* =============================================
-   1. WINDOW.ONLOAD
-   We wait for the entire page to load before running any code.
-   This makes sure all HTML elements exist before we try to grab them.
-   Docs: https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
-   ============================================= */
 
 window.onload = function () {
     console.log("page is fully loaded");
     init();
 };
 
-
-/* =============================================
-   2 & 3. ELEMENT REFERENCES + EVENT LISTENERS
-   document.getElementById() finds an HTML element by its "id" attribute.
-   Docs: https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
-
-   addEventListener() "listens" for user actions and runs a function when they happen.
-   Docs: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
-   ============================================= */
 
 function init() {
     // Grab our HTML elements and save them in variables
@@ -61,13 +27,7 @@ function init() {
 }
 
 
-/* =============================================
-   4. MAIN SEARCH FUNCTION
 
-   "async" means this function can use "await" inside it.
-   "await" pauses the function until a slow operation (like an API call) finishes.
-   Docs: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises
-   ============================================= */
 
 async function performSearch(searchInput, searchBtn, resultsDiv) {
     // .trim() removes extra spaces from the start and end
@@ -153,15 +113,7 @@ async function performSearch(searchInput, searchBtn, resultsDiv) {
 
 /* =============================================
    5. API FUNCTIONS
-   ============================================= */
-
-/**
- * Search LRCLIB for songs matching the user's text.
- *
- * fetch() makes an HTTP request — like visiting a URL in code.
- * Docs: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
- * LRCLIB docs: https://lrclib.net/docs
- */
+    ============================================= */
 async function searchLRCLIB(query) {
     // encodeURIComponent() makes text safe to put in a URL
     // e.g. spaces become %20
@@ -184,10 +136,7 @@ async function searchLRCLIB(query) {
 
 /**
  * Search iTunes for album art and a 30-second audio preview.
- * Completely free, no API key needed!
- *
- * iTunes API docs:
- * https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
+    * We use the track name and artist name to search for the song on iTunes.
  */
 async function searchiTunes(trackName, artistName) {
     try {

@@ -10,9 +10,9 @@
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: #0a0a0f;
-    color: #eaeaea;
+    font-family: 'Single Day', sans-serif;
+    background-color: #b5ceb5;
+    color: #7d7d7d;
     min-height: 100vh;
 }
 
@@ -54,15 +54,15 @@ body {
 }
 
 .hero-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Single Day', serif;
     font-size: 3em;
     font-weight: 700;
-    color: #1DB954;
+    color: #25a35e;
     margin-bottom: 8px;
 }
 
 .hero-subtitle {
-    color: #8888a0;
+    color: #779247;
     font-size: 1.05em;
 }
 
@@ -81,11 +81,11 @@ body {
     flex: 1;
     padding: 16px 22px;
     font-size: 1em;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Single Day', sans-serif;
     border: 1.5px solid #2a2a3d;
     border-radius: 50px;
-    background: #141420;
-    color: #eaeaea;
+    background: #a2c9b0;
+    color: #0b0b0b;
     outline: none;
 }
 
@@ -94,13 +94,13 @@ body {
 }
 
 .search-input::placeholder {
-    color: #555568;
+    color: #8484ab;
 }
 
 .search-btn {
     padding: 16px 32px;
     font-size: 1em;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Single Day', sans-serif;
     font-weight: 600;
     border: none;
     border-radius: 50px;
@@ -155,14 +155,14 @@ body {
     gap: 18px;
     padding: 18px;
     margin-bottom: 10px;
-    background: #141420;
+    background: #b9b9d2;
     border: 1px solid transparent;
     border-radius: 12px;
 }
 
 .song-card:hover {
-    background: #1c1c2e;
-    border-color: #2a2a3d;
+    background: #f4f3ba;
+    border-color: #e1e1e1;
 }
 
 /* Album art image */
@@ -177,7 +177,7 @@ body {
     width: 72px;
     height: 72px;
     border-radius: 8px;
-    background: #2a2a3d;
+    background: #dcdcdc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,17 +204,17 @@ body {
 
 /* The matching lyric line */
 .matching-lyric {
-    background: rgba(29, 185, 84, 0.15);
-    border-left: 3px solid #1DB954;
+    background: rgba(43, 43, 43, 0.15);
+    border-left: 3px solid #2e2e2e;
     padding: 8px 12px;
     border-radius: 0 6px 6px 0;
     font-style: italic;
     font-size: 0.92em;
-    color: #ccc;
+    color: #2e2e2e;
 }
 
 .timestamp {
-    color: #1DB954;
+    color: #2e2e2e;
     font-style: normal;
     font-size: 0.82em;
     font-weight: 600;
@@ -229,7 +229,7 @@ body {
 }
 
 .music-link {
-    color: #1DB954;
+    color: #2e2e2e;
     text-decoration: none;
     font-size: 0.82em;
     font-weight: 500;
