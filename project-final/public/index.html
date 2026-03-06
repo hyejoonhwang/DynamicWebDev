@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>dot your story</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>dot your story</h1>
+      <p class="subtitle">click a dot to leave your NYC story</p>
+      <div id="grid"></div>
+      <div class="symbol-guide">
+        <span class="symbol-guide-item"><span class="s1">&middot;</span> unclaimed</span>
+        <span class="symbol-guide-item"><span class="s2">&#9675;</span> 1 story</span>
+        <span class="symbol-guide-item"><span class="s3">&#9678;</span> 2 stories</span>
+        <span class="symbol-guide-item"><span class="s4">&#9673;</span> 3 stories</span>
+        <span class="symbol-guide-item"><span class="s5">&#9679;</span> 4+ stories</span>
+      </div>
+    </div>
+
+    <!-- popup overlay for viewing/adding stories -->
+    <div id="popup-overlay">
+      <div id="popup">
+        <div id="popup-header">
+          <span id="popup-dot-symbol"></span>
+          <span id="popup-title">dot #</span>
+          <span id="popup-close">x</span>
+        </div>
+        <div id="popup-stories"></div>
+        <div id="popup-form-section">
+          <p class="form-label">+ add your story</p>
+          <form id="story-form" method="POST" action="/submit">
+            <input type="hidden" id="form-dot-index" name="dotIndex" value="" />
+            <input type="text" id="form-name" name="name" placeholder="your name" />
+            <input type="text" id="form-spot" name="spot" placeholder="your favorite spot here" />
+            <textarea id="form-story" name="story" placeholder="what happened there?"></textarea>
+            <div class="form-buttons">
+              <input type="submit" value="submit" class="submit-btn" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

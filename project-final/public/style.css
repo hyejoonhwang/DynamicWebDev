@@ -1,0 +1,201 @@
+/* reset and base */
+body {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: monospace;
+  color: #333;
+  overflow: hidden;
+
+}
+
+.container {
+  text-align: center;
+  padding: 40px;
+}
+
+h1 {
+  color: #000;
+  font-size: 28px;
+  letter-spacing: 4px;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #595959;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+/* dot grid */
+#grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(58 * 12px);
+  margin: 0 auto;
+  line-height: 1;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  cursor: default;
+}
+
+.dot.clickable {
+  cursor: pointer;
+}
+
+/* dot state colors */
+.s0 { color: transparent; }
+.s1 { color: #000000; font-size: 12px; }
+.s2 { color: #ffca2c; font-size: 14px; }
+.s3 { color: #ff5810; font-size: 16px; }
+.s4 { color: #f12727; font-size: 18px; }
+.s5 { color: #ec0000; font-size: 28px; }
+
+/* legend */
+.legend {
+  margin-top: 30px;
+  color: #888;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+}
+
+.legend-item {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* popup overlay */
+#popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#popup {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 280px;
+  max-height: 400px;
+  overflow: auto;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+#popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+#popup-dot-symbol {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+#popup-title {
+  flex: 1;
+}
+
+#popup-close {
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
+  padding: 2px 6px;
+}
+
+#popup-close:hover {
+  color: #000;
+}
+
+/* stories inside popup */
+.story-card {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.story-name {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.story-spot {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.story-text {
+  color: #333;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.no-stories {
+  color: #aaa;
+  padding-bottom: 10px;
+}
+
+/* form section */
+#popup-form-section {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 5px;
+}
+
+.form-label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+#story-form input[type="text"],
+#story-form textarea {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  font-family: monospace;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+#story-form textarea {
+  height: 60px;
+  resize: none;
+}
+
+.form-buttons {
+  display: flex;
+}
+
+.submit-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  font-family: monospace;
+  font-size: 12px;
+  cursor: pointer;
+}
